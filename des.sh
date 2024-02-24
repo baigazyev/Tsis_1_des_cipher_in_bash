@@ -103,7 +103,7 @@ Ks() {
 cipher() {
     local str=$1
     local decr=$2
-    if [ $decr -ne 0 ]; then
+    if [ $decryptOrNot -ne 0 ]; then
         R[0]=$(echo $(permutations "$str" 0 32 "${IPT[@]}") | tr -d " ")
         L[0]=$(echo $(permutations "$str" 32 64 "${IPT[@]}") | tr -d " ")
     else
@@ -167,7 +167,7 @@ cipher() {
         echo "L$c ${L[$c]}"
         echo "R$c ${R[$c]}"
     done
-    if [ $decr -ne 0 ]; then
+    if [ $decryptOrNot -ne 0 ]; then
         FINALIP=$(echo $(permutations "${R[$RAUNDS]}${L[$RAUNDS]}" 0 64 "${IP1[@]}") | tr -d " ")
     else
         FINALIP=$(echo $(permutations "${L[$RAUNDS]}${R[$RAUNDS]}" 0 64 "${IP1[@]}") | tr -d " ")
@@ -181,6 +181,7 @@ key=$(echo $key | rev)
 
 ascii_plain_text=$(echo $(toascii "$plain_text") | tr -d " ")
 ascii_key=$(toascii "$key")
+echo "Text and Binary:"
 echo "Binary text: $ascii_plain_text"
 echo "Binary key: $ascii_key"
 
@@ -204,7 +205,7 @@ echo "Text $FINALIP"
 echo "Key $paritykey"
 CDs $paritykey
 Ks
-#cipher $FINALIP 
-#echo "Decoded binary: $FINALIP"
-#echo "Decoded text:"
-#echo $FINALIP | perl -lpe '$_=pack"B*",$_' | rev
+cipher $FINALIP 
+echo "Decoded binary: $FINALIP"
+echo "Decoded text:"
+echo $FINALIP | perl -lpe '$_=pack"B*",$_' | rev
