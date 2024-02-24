@@ -103,7 +103,7 @@ Ks() {
 cipher() {
     local str=$1
     local decr=$2
-    if [ $decryptOrNot -ne 0 ]; then
+    if [ $decr -ne 0 ]; then
         R[0]=$(echo $(permutations "$str" 0 32 "${IPT[@]}") | tr -d " ")
         L[0]=$(echo $(permutations "$str" 32 64 "${IPT[@]}") | tr -d " ")
     else
@@ -167,7 +167,7 @@ cipher() {
         echo "L$c ${L[$c]}"
         echo "R$c ${R[$c]}"
     done
-    if [ $decryptOrNot -ne 0 ]; then
+    if [ $decr -ne 0 ]; then
         FINALIP=$(echo $(permutations "${R[$RAUNDS]}${L[$RAUNDS]}" 0 64 "${IP1[@]}") | tr -d " ")
     else
         FINALIP=$(echo $(permutations "${L[$RAUNDS]}${R[$RAUNDS]}" 0 64 "${IP1[@]}") | tr -d " ")
